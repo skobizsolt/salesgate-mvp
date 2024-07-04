@@ -127,6 +127,26 @@ paths:
       responses:
         '200':
           description: OK
+  /analysis-result:
+    get:
+      tags:
+        - analytics
+      summary: Get AI analysis result
+      operationId: getAnalysisResult
+      parameters:
+        - name: templateId
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "d994f150-d651-4ed6-95b5-3b9f34f43c41"
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/GetAnalysisResultResponse'
 components:
   schemas:
     PostTemplateRequest:
@@ -208,3 +228,10 @@ components:
         data:
           type: string
           example: "25W"
+    GetAnalysisResultResponse:
+      type: object
+      description: "Analysis result response"
+      properties:
+        content:
+          type: string
+          example: "Solar panel performance is good"

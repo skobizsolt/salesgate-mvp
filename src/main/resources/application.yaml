@@ -5,5 +5,8 @@ spring:
 firebase:
   serviceAccountPath: ${SERVICE_ACCOUNT_PATH:src/main/resources/firebase/salesgateServiceAccount.json}
 
+external:
+  seaShellUrl: ${SEA_SHELL_URL:https://seashell-app-3yx5h.ondigitalocean.app/}
+
 server:
   port: ${PORT:8080}
