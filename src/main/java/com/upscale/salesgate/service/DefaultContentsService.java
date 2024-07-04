@@ -1,7 +1,9 @@
 package com.upscale.salesgate.service;
 
+import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.upscale.salesgate.exception.Errors;
 import com.upscale.salesgate.exception.ServiceExpection;
+import com.upscale.salesgate.model.GetContentResponse;
 import com.upscale.salesgate.model.PostContentRequest;
 import com.upscale.salesgate.model.TemplateField;
 import com.upscale.salesgate.persistence.ContentsRepository;
@@ -32,6 +34,17 @@ public class DefaultContentsService implements ContentsService {
         contentsRepository.saveContent(templateId, contentDto);
     }
 
+    @Override
+    public GetContentResponse getContentData(final String templateId) {
+        final var results = contentsRepository.getContent(templateId);
+        return new GetContentResponse()
+                .contentData(results.stream()
+                        .map(QueryDocumentSnapshot::getData)
+                        .toList()
+                );
+    }
+
+    @SuppressWarnings("java:S1905")
     private Object convert(final String data, final TemplateField.TypeEnum type) {
         return switch (type) {
             case STRING -> (String) data;

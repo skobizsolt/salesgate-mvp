@@ -1,8 +1,9 @@
 package com.upscale.salesgate.persistence;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 import com.upscale.salesgate.exception.Errors;
@@ -11,6 +12,8 @@ import com.upscale.salesgate.service.dto.ContentDto;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -34,14 +37,15 @@ public class ContentsRepository {
     }
 
     @SneakyThrows
-    public DocumentSnapshot getContent(final String templateId) {
-        final ApiFuture<DocumentSnapshot> templatesFuture = dbConnection
+    public List<QueryDocumentSnapshot> getContent(final String templateId) {
+        final ApiFuture<QuerySnapshot> templatesFuture = dbConnection
                 .collection(COLLECTION_CONTENTS)
                 .document(templateId)
+                .collection(COLLECTION_FIELDS)
                 .get();
         validateResult(templatesFuture.get());
 
-        return templatesFuture.get();
+        return templatesFuture.get().getDocuments();
     }
 
     private static void validateResult(final Object result) {

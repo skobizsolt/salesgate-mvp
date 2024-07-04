@@ -16,7 +16,7 @@ public class ContentsController implements ContentsApi {
 
     @Override
     public ResponseEntity<GetContentResponse> getContentData(final String templateId) {
-        return ContentsApi.super.getContentData(templateId);
+        return ResponseEntity.ok(contentsService.getContentData(templateId));
     }
 
     @Override
