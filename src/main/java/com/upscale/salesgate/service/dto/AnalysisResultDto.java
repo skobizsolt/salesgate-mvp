@@ -1,10 +1,10 @@
 package com.upscale.salesgate.service.dto;
 
-import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.Value;
 
 @Value
-@Builder
+@NoArgsConstructor(force = true)
 public class AnalysisResultDto {
     String review;
 }

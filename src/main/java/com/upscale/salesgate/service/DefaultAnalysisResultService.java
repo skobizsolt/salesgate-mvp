@@ -6,6 +6,7 @@ import com.upscale.salesgate.config.ExternalProperties;
 import com.upscale.salesgate.exception.Errors;
 import com.upscale.salesgate.exception.ServiceExpection;
 import com.upscale.salesgate.model.GetContentResponse;
+import com.upscale.salesgate.persistence.HistoryRepository;
 import com.upscale.salesgate.service.dto.AnalysisResultDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -15,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -24,9 +26,14 @@ public class DefaultAnalysisResultService implements AnalysisResultService {
     private final ContentsService contentsService;
     private final RestTemplate restTemplate;
     private final ExternalProperties externalProperties;
+    private final HistoryRepository historyRepository;
 
     @Override
     public String getAnalysis(final String templateId) {
+        final var history = historyRepository.getAnalysisHistory(templateId);
+        if (history.exists()) {
+            return Objects.requireNonNull(history.toObject(AnalysisResultDto.class)).getReview();
+        }
 
         final var content = contentsService.getContentData(templateId);
 
@@ -35,6 +42,8 @@ public class DefaultAnalysisResultService implements AnalysisResultService {
         }
 
         final var result = getAnalysisResult(content);
+        historyRepository.saveReview(templateId, result);
+
         return result.getReview();
     }
 
