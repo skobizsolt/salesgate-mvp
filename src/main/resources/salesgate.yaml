@@ -195,6 +195,13 @@ components:
       type: object
       description: "Post content request"
       properties:
+        contentData:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataRecord'
+    DataRecord:
+      type: object
+      properties:
         name:
           type: string
           example: "Solar panel performance"
