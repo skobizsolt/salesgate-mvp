@@ -9,6 +9,7 @@ import java.time.ZonedDateTime;
 public enum Errors {
 
     ENTITY_NOT_FOUND(1L, "Entity not found!", HttpStatus.BAD_REQUEST),
+    TEMPLATE_ERROR(2L, "Template is not applicable to this data", HttpStatus.BAD_REQUEST),
     UNEXPECTED_ERROR(999L, "Unexpected error occurred!", HttpStatus.INTERNAL_SERVER_ERROR);
 
     private final Long errorCode;
