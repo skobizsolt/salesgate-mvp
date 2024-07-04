@@ -37,7 +37,8 @@ public class TemplatesController implements TemplatesApi {
      */
     @Override
     public ResponseEntity<Void> deleteTemplate(String templateId) {
-        return TemplatesApi.super.deleteTemplate(templateId);
+        templatesService.deleteTemplate(templateId);
+        return ResponseEntity.ok().build();
     }
 
     /**
@@ -49,7 +50,8 @@ public class TemplatesController implements TemplatesApi {
      */
     @Override
     public ResponseEntity<Void> editTemplate(String templateId, PutTemplateRequest body) {
-        return TemplatesApi.super.editTemplate(templateId, body);
+        templatesService.editTemplate(templateId, body);
+        return ResponseEntity.ok().build();
     }
 
     /**
@@ -60,6 +62,6 @@ public class TemplatesController implements TemplatesApi {
      */
     @Override
     public ResponseEntity<GetTemplateResponse> getTemplate(String templateId) {
-        return TemplatesApi.super.getTemplate(templateId);
+        return ResponseEntity.ok(templatesService.getTemplate(templateId));
     }
 }
