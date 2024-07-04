@@ -29,7 +29,7 @@ paths:
         '200':
           description: OK
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: '#/components/schemas/GetTemplateResponse'
     put:
@@ -83,7 +83,7 @@ paths:
         '200':
           description: OK
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: '#/components/schemas/PostTemplateResponse'
   /contents/{templateId}:
@@ -103,7 +103,7 @@ paths:
         '200':
           description: OK
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: '#/components/schemas/GetContentResponse'
   /contents/{templateId}/save:
@@ -130,18 +130,8 @@ paths:
 components:
   schemas:
     PostTemplateRequest:
-      type: object
-      description: "Post template request"
-      properties:
-        templateId:
-          type: string
-          example: "d994f150-d651-4ed6-95b5-3b9f34f43c41"
-        heroColor:
-          $ref: '#/components/schemas/HeroColor'
-        fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/TemplateField'
+      allOf:
+        - $ref: '#/components/schemas/GetTemplateResponse'
     PostTemplateResponse:
       type: object
       description: "Post template response"
@@ -150,7 +140,8 @@ components:
           type: string
           example: "d994f150-d651-4ed6-95b5-3b9f34f43c41"
     PutTemplateRequest:
-      $ref: '#/components/schemas/GetTemplateResponse'
+      allOf:
+        - $ref: '#/components/schemas/GetTemplateResponse'
     GetTemplateResponse:
       type: object
       properties:
