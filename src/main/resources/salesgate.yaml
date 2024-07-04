@@ -1,0 +1,212 @@
+openapi: 3.0.1
+info:
+  title: SalesGate API
+  description: SalesGate API
+  version: '1.0'
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+tags:
+  - name: template
+    description: Template controller
+  - name: analytics
+    description: Analytics controller
+paths:
+  /templates/{templateId}:
+    get:
+      tags:
+        - template
+      summary: Get template information
+      operationId: getTemplate
+      parameters:
+        - name: templateId
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "d994f150-d651-4ed6-95b5-3b9f34f43c41"
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GetTemplateResponse'
+    put:
+      tags:
+        - template
+      summary: Edit an existing template
+      operationId: editTemplate
+      parameters:
+        - name: templateId
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "d994f150-d651-4ed6-95b5-3b9f34f43c41"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutTemplateRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - template
+      summary: Delete template
+      operationId: deleteTemplate
+      parameters:
+        - name: templateId
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "d994f150-d651-4ed6-95b5-3b9f34f43c41"
+      responses:
+        '200':
+          description: OK
+  /templates/new:
+    post:
+      tags:
+        - template
+      summary: Create new template
+      operationId: createTemplate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostTemplateRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PostTemplateResponse'
+  /contents/{templateId}:
+    get:
+      tags:
+        - analytics
+      summary: Get content data from Firestore
+      operationId: getContentData
+      parameters:
+        - name: templateId
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "d994f150-d651-4ed6-95b5-3b9f34f43c41"
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GetContentResponse'
+  /contents/{templateId}/save:
+    post:
+      tags:
+        - analytics
+      summary: Save content to Firestore
+      operationId: saveContent
+      parameters:
+        - name: templateId
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "d994f150-d651-4ed6-95b5-3b9f34f43c41"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostContentRequest'
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    PostTemplateRequest:
+      type: object
+      description: "Post template request"
+      properties:
+        templateId:
+          type: string
+          example: "d994f150-d651-4ed6-95b5-3b9f34f43c41"
+        heroColor:
+          $ref: '#/components/schemas/HeroColor'
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateField'
+    PostTemplateResponse:
+      type: object
+      description: "Post template response"
+      properties:
+        templateId:
+          type: string
+          example: "d994f150-d651-4ed6-95b5-3b9f34f43c41"
+    PutTemplateRequest:
+      $ref: '#/components/schemas/GetTemplateResponse'
+    GetTemplateResponse:
+      type: object
+      properties:
+        heroColor:
+          $ref: '#/components/schemas/HeroColor'
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateField'
+    HeroColor:
+      type: object
+      description: "RGB parameters to define frontend color customization"
+      properties:
+        red:
+          type: integer
+          example: 255
+        green:
+          type: integer
+          example: 120
+        blue:
+          type: integer
+          example: 55
+    TemplateField:
+      type: object
+      description: "Describes the template field"
+      properties:
+        name:
+          description: "Field identifier"
+          type: string
+          example: "Solar panel performance"
+        type:
+          type: string
+          enum:
+            - STRING
+            - INTEGER
+            - BOOLEAN
+          example: STRING
+        isMandatory:
+          type: boolean
+          example: true
+        position:
+          type: integer
+          example: 1
+    GetContentResponse:
+      type: object
+      description: "Content response object"
+      properties:
+        contentData:
+          type: object
+    PostContentRequest:
+      type: object
+      description: "Post content request"
+      properties:
+        name:
+          type: string
+          example: "Solar panel performance"
+        data:
+          type: string
+          example: "25W"
