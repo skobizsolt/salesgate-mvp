@@ -2,5 +2,8 @@ spring:
   application:
     name: upscale-salesgate-mvp
 
+firebase:
+  serviceAccountPath: ${SERVICE_ACCOUNT_PATH:src/main/resources/firebase/salesgateServiceAccount.json}
+
 server:
   port: ${PORT:8080}
